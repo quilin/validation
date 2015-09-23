@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Validation Demo</title>
+
+		<style type="text/css">
+			input {
+				font-family: Calibri;
+				padding: 3px;
+				font-size: 16px;
+				border-radius: 3px;
+				border: 1px solid #ccc;
+				outline: none;
+			}
+			input:focus {
+				box-shadow: inset 0 0 5px 0 #ccc;
+			}
+			input.field-validation-error {
+				border-color: #d77;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<input type="text" data-val="true" data-val-required="true" name="required" />
+			<div data-val-msg-for="required"></div>
+			<input type="text" data-val="true" data-val-number="true" data-val-number-message="Здесь должно быть число" />
+		</div>
+
+		<script type="text/javascript" src="../external/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="../src/validation.js"></script>
+
+		<script type="text/javascript">
+			$.validators.register({
+				name: 'number',
+				regex: /^\d*((\.|\,)\d+)?$/,
+				defaultErrorMessage: 'Введите число'
+			})
+		</script>
+	</body>
+</html>

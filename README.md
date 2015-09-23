@@ -23,7 +23,9 @@ So far the library doesn't do much. It is written in order to work with ASP.NET 
 
 # default validators
 ## Required
+```html
 <input data-val-required="true" data-val-required-message="Field should not be empty!" />
+```
 
 # custom validators
 
@@ -36,6 +38,7 @@ It's simple object with following fields:
 1. name (String) - validator's name. It's required for it will be used in the markup.
 2. regex (RegExp) - if the validator's rule is so simple it can be described with only regex or the input must match regex before we do any further checks, you can pass it as a param.
 3. validate (Function) - this is the validation function.
+```javascript
    function (value, options, evt) {
      // value is current input value
      // options is object that is generated from data-val-{validatorName}-{validatorOption} attributes (yes, -message is present here as well)
@@ -46,12 +49,13 @@ It's simple object with following fields:
      // return { whatever: 'you', want: '!' };
      // but care to return something that will be clearly converted to Boolean
    };
+```
 4. defaultErrorMessage (String) - error message that will be displayed by default (if input has no -message attribute for current validator)
    
 ## example
 
 Let's create two validators of common use:
-
+```javascript
 $.validators.register({
   name: 'number',
   regex: /^\d+((\.|\,)\d+)?$/,
@@ -69,11 +73,14 @@ $.validators.register({
   },
   defaultErrorMessage: 'Enter any number!'
 });
-
+```
+```html
 <input type="text" data-val="true" data-val-number="true" data-val-number-message="Needs to be a number!" />
 or
 <input type="text" data-val="true" data-val-number="true" data-val-number-max-value="20" data-val-number-max-value-message="Number must be less or equal to 20" />
+```
 
+```javascript
 $.validators.register({
   name: 'server',
   validate: $.debounce(function (value, options) {
@@ -89,7 +96,10 @@ $.validators.register({
   }, 1000),
   defaultErrorMessage: 'Something went wrong'
 });
+```
 
+```html
 <input type="text" data-val="true" data-val-server="true" data-val-server-url="/someApiMethod" data-val-server-type="get" data-val-server-message="Invalid input" />
+```
 
 Will become invalid if server answers with failed response or valid otherwize. Server can even send some error message as plain text and it will be displayed next to input.

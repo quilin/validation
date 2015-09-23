@@ -27,7 +27,7 @@
 		validator.prototype = {
 			validate: function (value, options, evt, element) {
 				var validationResult = this.validationFunction
-					? this.validationFunction.apply(element, [value, options, evt])
+					? this.regex.test(value) && this.validationFunction.apply(element, [value, options, evt])
 					: this.regex.test(value);
 				return validationResult instanceof Promise
 					? validationResult
@@ -49,6 +49,7 @@
 				});
 				return match.length === 0
 					? emptyValidator
+
 					: match[0];
 			},
 			register: function (validatorOptions) {

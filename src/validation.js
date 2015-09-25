@@ -101,9 +101,6 @@
 				value = el.val(),
 				valMsg;
 			for (var validatorName in validators) {
-				for (var dataProp in data) {
-					var match = dataProp.match(/^(val)/)
-				}
 				validations.push(validators[validatorName].validate(value, getValidationOptions(validatorName), evt, el));
 			}
 			Promise.all(validations)

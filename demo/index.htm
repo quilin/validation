@@ -18,24 +18,58 @@
 			input.field-validation-error {
 				border-color: #d77;
 			}
+			.b {
+				float: left;
+				width: 30px;
+				height: 30px;
+				background: #eee;
+				border: 1px solid #444;
+				line-height: 30px;
+				text-align: center;
+			}
+			.b.res { background: #5a5; }
+			.b.rej { background: #a55; }
 		</style>
 	</head>
 	<body>
-		<div>
-			<input type="text" data-val="true" data-val-required="true" name="required" />
-			<div data-val-msg-for="required"></div>
-			<input type="text" data-val="true" data-val-number="true" data-val-number-message="Здесь должно быть число" />
-		</div>
+		<div class="b" id="A">A</div>
+		<div class="b" id="B">B</div>
+		<div class="b" id="C">C</div>
+		<div class="b" id="D">D</div>
+		<div class="b" id="E">E</div>
+		<div class="b" id="F">F</div>
 
 		<script type="text/javascript" src="../external/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript" src="../src/validation.js"></script>
+		<script type="text/javascript" src="../src/promiseextensions.js"></script>
 
 		<script type="text/javascript">
-			$.validators.register({
-				name: 'number',
-				regex: /^\d*((\.|\,)\d+)?$/,
-				defaultErrorMessage: 'Введите число'
-			})
+			var toErr = ['A', 'F'];
+			var btns = ['A','B','C','D','E','F'];
+			var prms = btns.map(function (id, i) {
+				return new Promise(function (r1, r2) {
+					$('#' + id)
+						.on('click', function () {
+							var err = ~toErr.indexOf(id);
+
+							$(this).addClass(err ? 'rej' : 'res');
+							(err ? r2 : r1)(id);
+						});
+				});
+			});
+			var tree = [
+				[prms[0],
+					[prms[2],
+						prms[4]
+					],
+					prms[3]
+				],
+				[prms[1],
+					prms[5]
+				]
+			];
+
+			Promise.tree(tree).then(function (i) { console.log(i); }, function (i) { console.log(i); });
 		</script>
 	</body>
 </html>
